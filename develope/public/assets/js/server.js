@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 3001;
 
 const fs = require('fs');
+
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Note Taker App!');
@@ -24,4 +26,16 @@ app.get('/', (req, res) => {
         res.send('Note saved successfully!');
       });
     });
+  });
+
+  app.get('/notes', (req, res) => {
+    fs.readFile('notes.json', (err, data) => {
+      if (err) throw err;
+      let notes = JSON.parse(data);
+      res.send(notes);
+    });
+  });
+
+  app.listen(port, () => {
+    console.log(`Note Taker app listening at http://localhost:${port}`);
   });
