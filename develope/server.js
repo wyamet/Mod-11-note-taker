@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
-const port = 3001;
-
+const PORT = process.env.PORT || 3001;
 const fs = require('fs');
-
 app.use(express.static('public'));
+app.use(express.json());
+
+app.use('/api', apiRoutes);
+app.use('/', htmlRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Note Taker App!');
@@ -36,6 +38,6 @@ app.get('/', (req, res) => {
     });
   });
 
-  app.listen(port, () => {
-    console.log(`Note Taker app listening at http://localhost:${port}`);
+  app.listen(PORT, () => {
+    console.log(`API server now on port ${PORT}. Welcome!`);
   });
