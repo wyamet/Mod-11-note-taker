@@ -1,43 +1,22 @@
-const express = require('express');
+const express = require("express");
+const path = require("path");
+const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 3001;
-const fs = require('fs');
+const apiRoutes = require('./Routes/notes');
+
+const htmlRoutes = require('./Routs/index');
+
 app.use(express.static('public'));
+
+app.use(express.urlencoded({extended: true}));
+
 app.use(express.json());
 
-app.use('/api', apiRoutes);
-app.use('/', htmlRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the Note Taker App!');
-  });
+app.use('/api', 'Routes ');
+app.use('/', 'Routes ');
 
-  app.post('/notes', (req, res) => {
-    // get the note data from the request body
-    const newNote = req.body;
-  
-    // read the existing notes from the JSON file
-    fs.readFile('notes.json', (err, data) => {
-      if (err) throw err;
-      let notes = JSON.parse(data);
-      notes.push(newNote);
-  
-      // write the updated notes to the JSON file
-      fs.writeFile('notes.json', JSON.stringify(notes), (err) => {
-        if (err) throw err;
-        res.send('Note saved successfully!');
-      });
-    });
-  });
-
-  app.get('/notes', (req, res) => {
-    fs.readFile('notes.json', (err, data) => {
-      if (err) throw err;
-      let notes = JSON.parse(data);
-      res.send(notes);
-    });
-  });
-
-  app.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}. Welcome!`);
   });
