@@ -1,22 +1,17 @@
-const express = require("express");
-const path = require("path");
-const fs = require("fs");
+const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3001;
-const apiRoutes = require('./Routes/notes');
 
-const htmlRoutes = require('./Routs/index');
-
-app.use(express.static('public'));
-
-app.use(express.urlencoded({extended: true}));
+const apiRoutes = require('./db/Routes/routesAPI');
+const htmlRoutes = require('./db/Routes/routesHTML');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use('/api', 'Routes ');
-app.use('/', 'Routes ');
+app.use('/api', apiRoutes);
+app.use('/', htmlRoutes);
 
 app.listen(PORT, () => {
-    console.log(`API server now on port ${PORT}. Welcome!`);
-  });
+    console.log(`Server is listening on port ${PORT}`);
+});
